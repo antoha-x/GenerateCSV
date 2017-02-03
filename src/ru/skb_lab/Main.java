@@ -7,7 +7,7 @@ public class Main {
  
     public static void main(String[] args) {
  
-        FileInputStream fis;
+        FileInputStream fis = null;
         Properties property = new Properties();
  
         try {
@@ -20,8 +20,8 @@ public class Main {
             String login = property.getProperty("db.login");
             String password = property.getProperty("db.password");
             String separator = property.getProperty("file.separator");
-            String in = property.getProperty("db.in");
-            String out = property.getProperty("db.out");
+            String in = property.getProperty("directory.in");
+            String out = property.getProperty("directory.out");
             System.out.println("HOST: " + host
                             + ", LOGIN: " + login
                             + ", PASSWORD: " + password
@@ -30,7 +30,15 @@ public class Main {
                             +",OUT:" + out);
  
         } catch (IOException e) {
-            System.err.println("ОШИБКА: Файл свойств отсуствует!"+e.getMessage());
+            System.err.println("ОШИБКА: Файл свойств отсуствует!" + e.getMessage());
+        } catch (Exception ex) {
+        	ex.printStackTrace();
+        } finally {
+        	try {
+				fis.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
         }
  
     }

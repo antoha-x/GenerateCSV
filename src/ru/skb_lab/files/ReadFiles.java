@@ -6,9 +6,9 @@ import java.util.HashMap;
 public class ReadFiles implements IReadFiles<String, Statement>, IFiles {
 
 	@Override
-	public void setDirectory(String directory) {
+	public String getDirectory() {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 	
 	@Override
