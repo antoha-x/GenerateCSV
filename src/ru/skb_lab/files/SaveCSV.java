@@ -9,19 +9,19 @@ public class SaveCSV implements ISaveFile, IFiles {
 	
 	
 	public SaveCSV(Properties prop) {
-		separator = prop.getProperty("file.separator").charAt(0);
-		saveDirectory = prop.getProperty("directory.out");
+		this.separator = prop.getProperty("file.separator").charAt(0);
+		this.saveDirectory = prop.getProperty("directory.out");
 	}
 	
 	
 	@Override
 	public char getSeparator() {		
-		return separator;
+		return this.separator;
 	}
 
 	@Override
 	public String getDirectory() {
-		return saveDirectory;
+		return this.saveDirectory;
 	}
 
 	@Override
