@@ -1,6 +1,7 @@
 package ru.skb_lab;
  
 import java.io.*;
+
 import java.util.Properties;
  
 public class Main {
@@ -11,11 +12,10 @@ public class Main {
         Properties property = new Properties();
  
         try {
-            
         	
         	fis = new FileInputStream("src/ru/skb_lab/Config/config.properties");
             property.load(fis);
- 
+            
             String host = property.getProperty("db.host");
             String login = property.getProperty("db.login");
             String password = property.getProperty("db.password");
