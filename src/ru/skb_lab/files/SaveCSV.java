@@ -1,17 +1,27 @@
 package ru.skb_lab.files;
 
+import java.util.Properties;
+
 public class SaveCSV implements ISaveFile, IFiles {
 
+	private final char separator;
+	private final String saveDirectory;
+	
+	
+	public SaveCSV(Properties prop) {
+		this.separator = prop.getProperty("file.separator").charAt(0);
+		this.saveDirectory = prop.getProperty("directory.out");
+	}
+	
+	
 	@Override
-	public void setSeparator(char seperator) {
-		// TODO Auto-generated method stub
-		
+	public char getSeparator() {		
+		return this.separator;
 	}
 
 	@Override
-	public void setDirectory(String saveDirectory) {
-		// TODO Auto-generated method stub
-		
+	public String getDirectory() {
+		return this.saveDirectory;
 	}
 
 	@Override
@@ -19,5 +29,14 @@ public class SaveCSV implements ISaveFile, IFiles {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+	
+
+
+
+	
+	
+	
 
 }
