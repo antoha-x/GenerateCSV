@@ -32,15 +32,11 @@ public class ReadFiles implements IReadFiles<String, String>, IFiles {
 	
 	@Override
 	public HashMap<String, String> getRequest() {
-		String nameBuisnessProc = null;
-		String requestBuisnessProc = null;
 		
 		fileNames = getFileNames();
 				
 		for (String el: fileNames) {
-			nameBuisnessProc = el.substring(0, el.indexOf(getExtension()));
-			requestBuisnessProc = getFileData(getDirectory(), el);
-			requests.put(nameBuisnessProc, requestBuisnessProc);
+			requests.put(el.substring(0, el.indexOf(getExtension())), getFileData(getDirectory(), el));
 		}
 		 
 		return requests;
