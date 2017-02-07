@@ -11,11 +11,11 @@ public class RequestProcessing {
 	
 	public RequestProcessing(Properties prop) {
 		try {
-		    Class.forName("oracle.jdbc.driver.OracleDriver");
+		    Class.forName(prop.getProperty("db.class"));
 		    connection = DriverManager.getConnection(prop.getProperty("db.host"),prop.getProperty("db.login"),
 		    		prop.getProperty("db.password"));
 		} catch (ClassNotFoundException cnfe) {
-		    System.out.println("Where is your MySQL JDBC Driver?");
+		    System.out.println("Where is your Oracle JDBC Driver?");
 		    cnfe.printStackTrace();
 		} catch (SQLException e) {
 	        e.printStackTrace();
