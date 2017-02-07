@@ -1,38 +1,90 @@
 package ru.skb_lab.files;
 
-import java.sql.Statement;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.DirectoryIteratorException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
+public class ReadFiles implements IReadFiles<String, String>, IFiles {
 
-public class ReadFiles implements IReadFiles<String, Statement>, IFiles {
-
-	private final String openDirectory;
+	private final String OPEN_DIRECTORY;
+	private final String FILE_EXTENSION;
+	
+	private ArrayList<String> fileNames = new ArrayList<String>();
+	private HashMap<String, String> requests = new HashMap<String, String>();
 	
 	public ReadFiles(Properties prop) {
-		this.openDirectory = prop.getProperty("directory.out");	
+		this.OPEN_DIRECTORY = prop.getProperty("directory.out");
+		this.FILE_EXTENSION = prop.getProperty("file.extension");
 	}
 	
 	@Override
 	public String getDirectory() {
-		// TODO Auto-generated method stub
-		
-		return this.openDirectory;
+		return this.OPEN_DIRECTORY;
 	}
 	
-
 	@Override
-	public HashMap<String, Statement> getRequest() {
-		// TODO Auto-generated method stub
-		return new HashMap<String, Statement>();
+	public HashMap<String, String> getRequest() {
+		String nameBuisnessProc = null;
+		String requestBuisnessProc = null;
+		
+		fileNames = getFileNames();
+				
+		for (String el: fileNames) {
+			nameBuisnessProc = el.substring(0, el.indexOf(getExtension()));
+			requestBuisnessProc = getFileData(getDirectory(), el);
+			requests.put(nameBuisnessProc, requestBuisnessProc);
+		}
+		 
+		return requests;
 	}
 
-	@Override
-	public Statement getFileData() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getExtension() {
+		return FILE_EXTENSION;
 	}
-
-
+	
+	private ArrayList<String> getFileNames() {
+		ArrayList<String> fn = new ArrayList<String>();
+		
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(OPEN_DIRECTORY))) {
+            for (Path file: stream) {
+                if(!file.toFile().isDirectory() ) {
+                	if (file.getFileName().toString().endsWith(FILE_EXTENSION))
+                		fn.add(file.getFileName().toString());                	
+                }
+            }
+        } catch (IOException | DirectoryIteratorException x) {
+                System.err.println(x);
+        }
+		
+		return fn;
+	}
+	
+	private String getFileData(String filePath, String fileName) {
+		
+	    StringBuilder sb = new StringBuilder();	 
+	    try {
+	        BufferedReader in = new BufferedReader(new FileReader(filePath+fileName));
+	        try {
+	            String line;
+	            while ((line = in.readLine()) != null) {
+	                sb.append(line);
+	                sb.append(" ");
+	            }
+	        } finally {	            
+	            in.close();
+	        }
+	    } catch(IOException e) {
+	        e.getStackTrace();
+	    }	 
+	    return sb.toString();
+	}
 
 }
